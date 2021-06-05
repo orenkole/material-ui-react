@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/styles";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from "@material-ui/core/Button";
+import {Link} from "react-router-dom";
 
 // import logo from "../../assets/logo.svg";
 
@@ -51,7 +52,7 @@ function Header() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
 
-  const handleChange = (e: any, value: number) => {
+  const handleChange = (e: any, value: any) => {
     setValue(value) ;
   }
 
@@ -67,11 +68,11 @@ function Header() {
               className={classes.tabContainer}
               indicatorColor="primary"
             >
-              <Tab className={classes.tab} label="Home" />
-              <Tab className={classes.tab} label="The Revolution" />
-              <Tab className={classes.tab} label="About Us" />
-              <Tab className={classes.tab} label="Contact Us" />
-              <Tab className={classes.tab} label="Services" />
+              <Tab className={classes.tab} component={Link} to="/" label="Home" />
+              <Tab className={classes.tab} component={Link} to="/revolution" label="The Revolution" />
+              <Tab className={classes.tab} component={Link} to="/about" label="About Us" />
+              <Tab className={classes.tab} component={Link} to="/contact" label="Contact Us" />
+              <Tab className={classes.tab} component={Link} to="/services" label="Services" />
             </Tabs>
             <Button variant="contained" color="secondary" className={classes.button}>
               Free estimate
