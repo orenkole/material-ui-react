@@ -3,6 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { useScrollTrigger } from '@material-ui/core';
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/styles";
 
 function ElevationScroll(props: any) {
   const { children } = props;
@@ -16,17 +17,29 @@ function ElevationScroll(props: any) {
   });
 }
 
+const useStyles = makeStyles((theme: any) => ({
+  toolbarMargin: {
+    ...theme.mixins.toolbar
+  }
+}))
+
 function Header() {
+
+  const classes = useStyles();
+
   return (
-    <ElevationScroll>
-      <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h3" color="secondary">
-            Arc Development
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </ElevationScroll>
+    <React.Fragment>
+      <ElevationScroll>
+        <AppBar position="fixed">
+          <Toolbar>
+            <Typography variant="h3" color="secondary">
+              Arc Development
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </ElevationScroll>
+      <div className={classes.toolbarMargin} />
+    </React.Fragment>
   )
 }
 
