@@ -99,6 +99,10 @@ const useStyles = makeStyles((theme: any) => ({
   drawerItem: {
     ...theme.typography.tab,
     color: "white",
+    opacity: 0.7,
+  },
+  drawerItemSelected: {
+    opacity: 1,
   },
   drawerItemEstimate: {
     backgroundColor: theme.palette.common.orange,
@@ -299,11 +303,18 @@ function Header() {
             button
             component={Link}
             to="/"
-            onClick={() => { setOpenDrawer(false) }}
+            onClick={() => {
+              setOpenDrawer(false);
+              setValue(0);
+            }}
+            selected={value === 0}
           >
             <ListItemText
               disableTypography
-              className={classes.drawerItem}
+              className={value === 0
+                ? `${classes.drawerItem} ${classes.drawerItemSelected}`
+                : classes.drawerItem
+              }
             >Home</ListItemText>
           </ListItem>
           <ListItem
@@ -311,11 +322,18 @@ function Header() {
             button
             component={Link}
             to="/services"
-            onClick={() => { setOpenDrawer(false) }}
+            onClick={() => {
+              setOpenDrawer(false);
+              setValue(1);
+            }}
+            selected={value === 1}
           >
             <ListItemText
               disableTypography
-              className={classes.drawerItem}
+              className={value === 1
+                ? `${classes.drawerItem} ${classes.drawerItemSelected}`
+                : classes.drawerItem
+              }
             >Services</ListItemText>
           </ListItem>
           <ListItem
@@ -323,11 +341,18 @@ function Header() {
             button
             component={Link}
             to="/revolution"
-            onClick={() => { setOpenDrawer(false) }}
+            onClick={() => {
+              setOpenDrawer(false);
+              setValue(2);
+            }}
+            selected={value === 2}
           >
             <ListItemText
               disableTypography
-              className={classes.drawerItem}
+              className={value === 2
+                ? `${classes.drawerItem} ${classes.drawerItemSelected}`
+                : classes.drawerItem
+              }
             >Revolution</ListItemText>
           </ListItem>
           <ListItem
@@ -335,11 +360,18 @@ function Header() {
             button
             component={Link}
             to="/about"
-            onClick={() => { setOpenDrawer(false) }}
+            onClick={() => {
+              setOpenDrawer(false);
+              setValue(3);
+            }}
+            selected={value === 3}
           >
             <ListItemText
               disableTypography
-              className={classes.drawerItem}
+              className={value === 3
+                ? `${classes.drawerItem} ${classes.drawerItemSelected}`
+                : classes.drawerItem
+              }
             >About Us</ListItemText>
           </ListItem>
           <ListItem
@@ -347,11 +379,18 @@ function Header() {
             button
             component={Link}
             to="/contact"
-            onClick={() => { setOpenDrawer(false) }}
+            onClick={() => {
+              setOpenDrawer(false);
+              setValue(4);
+            }}
+            selected={value === 4}
           >
             <ListItemText
               disableTypography
-              className={classes.drawerItem}
+              className={value === 4
+                ? `${classes.drawerItem} ${classes.drawerItemSelected}`
+                : classes.drawerItem
+              }
             >Contact Us</ListItemText>
           </ListItem>
           <ListItem
@@ -359,7 +398,11 @@ function Header() {
             button
             component={Link}
             to="/estimate"
-            onClick={() => { setOpenDrawer(false) }}
+            onClick={() => {
+              setOpenDrawer(false);
+              setValue(5);
+            }}
+            selected={value === 5}
             className={classes.drawerItemEstimate}
           >
             <ListItemText
