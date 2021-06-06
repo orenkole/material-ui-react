@@ -7,6 +7,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 // import logo from "../../assets/logo.svg";
 
@@ -57,9 +59,24 @@ function Header() {
 
   const classes = useStyles();
   const [value, setValue] = useState(0);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const handleChange = (e: any, value: any) => {
     setValue(value);
+
+  }
+
+  // tell menu where to render and open the menu
+  const handleClick = (e: any) => {
+    setAnchorEl(e.currentTarget);
+    setOpen(true);
+  }
+
+  // close menu
+  const handleClose = (e: any) => {
+    setAnchorEl(null);
+    setOpen(false);
   }
 
   useEffect(() => {
@@ -97,15 +114,65 @@ function Header() {
               className={classes.tabContainer}
               indicatorColor="primary"
             >
-              <Tab className={classes.tab} component={Link} to="/" label="Home" />
-              <Tab className={classes.tab} component={Link} to="/services" label="Services" />
-              <Tab className={classes.tab} component={Link} to="/revolution" label="The Revolution" />
-              <Tab className={classes.tab} component={Link} to="/about" label="About Us" />
-              <Tab className={classes.tab} component={Link} to="/contact" label="Contact Us" />
+              <Tab 
+                className={classes.tab} 
+                component={Link} 
+                to="/" 
+                label="Home" 
+              />
+              <Tab 
+                aria-owns={anchorEl ? "simple-menu" : undefined}
+                aria-haspopup={anchorEl ? "true" : undefined}
+                className={classes.tab} 
+                component={Link} 
+                onMouseOver={(event: any) => handleClick(event)}
+                to="/services" 
+                label="Services" 
+              />
+              <Tab 
+                className={classes.tab} 
+                component={Link} 
+                to="/revolution" 
+                label="The Revolution" 
+              />
+              <Tab 
+                className={classes.tab} 
+                component={Link} 
+                to="/about" 
+                label="About Us" 
+              />
+              <Tab 
+                className={classes.tab} 
+                component={Link} to="/contact" 
+                label="Contact Us" 
+              />
             </Tabs>
             <Button variant="contained" color="secondary" className={classes.button}>
               Free estimate
             </Button>
+            <Menu 
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{onMouseLeave: handleClose}}
+            >
+              <MenuItem 
+                onClick={handleClose}
+              >
+                Custom software development
+              </MenuItem>
+              <MenuItem 
+                onClick={handleClose}
+              >
+                Mobile App Development
+              </MenuItem>
+              <MenuItem 
+                onClick={handleClose}
+              >
+                Website Development
+              </MenuItem>
+            </Menu>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
