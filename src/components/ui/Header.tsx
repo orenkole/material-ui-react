@@ -145,20 +145,32 @@ function Header() {
     setOpenMenu(false);
   }
 
-  const menuOptions = [
-    { name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
-    { name: "Custom Software", link: "/customsoftware", activeIndex: 1, selectedIndex: 1 },
-    { name: "Mobile App Development", link: "/mobileapps", activeIndex: 1, selectedIndex: 2 },
-    { name: "Website Development", link: "/websites", activeIndex: 1, selectedIndex: 3 },
-  ];
+  const menuOptions = useMemo(() => {
+    return [
+      { name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
+      { name: "Custom Software", link: "/customsoftware", activeIndex: 1, selectedIndex: 1 },
+      { name: "Mobile App Development", link: "/mobileapps", activeIndex: 1, selectedIndex: 2 },
+      { name: "Website Development", link: "/websites", activeIndex: 1, selectedIndex: 3 },
+    ]
+  }, []);
 
-  const routes = [
-    { name: "Home", link: "/", activeIndex: 0, selectedIndex: 0 },
-    { name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
-    { name: "Revolution", link: "/revolution", activeIndex: 2, selectedIndex: 0 },
-    { name: "About Us", link: "/about", activeIndex: 3, selectedIndex: 0 },
-    { name: "Contact Us", link: "/contact", activeIndex: 4, selectedIndex: 0 },
-  ];
+  const routes = useMemo(() => {
+    return [
+      { name: "Home", link: "/", activeIndex: 0, selectedIndex: 0 },
+      {
+        name: "Services",
+        link: "/services",
+        activeIndex: 1,
+        selectedIndex: 0,
+        ariaOwns: anchorEl ? "simple-menu" : undefined,
+        ariaPopup: anchorEl ? "true" : undefined,
+        onMouseOver: (event: any) => handleClick(event),
+      },
+      { name: "Revolution", link: "/revolution", activeIndex: 2, selectedIndex: 0 },
+      { name: "About Us", link: "/about", activeIndex: 3, selectedIndex: 0 },
+      { name: "Contact Us", link: "/contact", activeIndex: 4, selectedIndex: 0 },
+    ]
+  }, [anchorEl]);
 
   useEffect(() => {
     [...menuOptions, ...routes].forEach(route => {
@@ -185,38 +197,20 @@ function Header() {
         className={classes.tabContainer}
         indicatorColor="primary"
       >
-        <Tab
-          className={classes.tab}
-          component={Link}
-          to="/"
-          label="Home"
-        />
-        <Tab
-          aria-owns={anchorEl ? "simple-menu" : undefined}
-          aria-haspopup={anchorEl ? "true" : undefined}
-          className={classes.tab}
-          component={Link}
-          onMouseOver={(event: any) => handleClick(event)}
-          to="/services"
-          label="Services"
-        />
-        <Tab
-          className={classes.tab}
-          component={Link}
-          to="/revolution"
-          label="The Revolution"
-        />
-        <Tab
-          className={classes.tab}
-          component={Link}
-          to="/about"
-          label="About Us"
-        />
-        <Tab
-          className={classes.tab}
-          component={Link} to="/contact"
-          label="Contact Us"
-        />
+        {
+          routes.map((route, index) => (
+            <Tab
+              key={`${route}${index}`}
+              className={classes.tab}
+              component={Link}
+              to={route.link}
+              label={route.name}
+              aria-owns={route.ariaOwns}
+              // aria-haspopup={route.ariaPopup}
+              onMouseOver={route.onMouseOver}
+            />
+          ))
+        }
       </Tabs>
       <Button variant="contained" color="secondary" className={classes.button}>
         Free estimate
@@ -229,6 +223,7 @@ function Header() {
         MenuListProps={{ onMouseLeave: handleClose }}
         classes={{ paper: classes.menu }}
         elevation={0}
+        keepMounted
       >
         {
           menuOptions.map((option: any, i: number) => {
@@ -268,101 +263,30 @@ function Header() {
         <List
           disablePadding
         >
-          <ListItem
-            divider
-            button
-            component={Link}
-            to="/"
-            onClick={() => {
-              setOpenDrawer(false);
-              setValue(0);
-            }}
-            selected={value === 0}
-          >
-            <ListItemText
-              disableTypography
-              className={value === 0
-                ? `${classes.drawerItem} ${classes.drawerItemSelected}`
-                : classes.drawerItem
-              }
-            >Home</ListItemText>
-          </ListItem>
-          <ListItem
-            divider
-            button
-            component={Link}
-            to="/services"
-            onClick={() => {
-              setOpenDrawer(false);
-              setValue(1);
-            }}
-            selected={value === 1}
-          >
-            <ListItemText
-              disableTypography
-              className={value === 1
-                ? `${classes.drawerItem} ${classes.drawerItemSelected}`
-                : classes.drawerItem
-              }
-            >Services</ListItemText>
-          </ListItem>
-          <ListItem
-            divider
-            button
-            component={Link}
-            to="/revolution"
-            onClick={() => {
-              setOpenDrawer(false);
-              setValue(2);
-            }}
-            selected={value === 2}
-          >
-            <ListItemText
-              disableTypography
-              className={value === 2
-                ? `${classes.drawerItem} ${classes.drawerItemSelected}`
-                : classes.drawerItem
-              }
-            >Revolution</ListItemText>
-          </ListItem>
-          <ListItem
-            divider
-            button
-            component={Link}
-            to="/about"
-            onClick={() => {
-              setOpenDrawer(false);
-              setValue(3);
-            }}
-            selected={value === 3}
-          >
-            <ListItemText
-              disableTypography
-              className={value === 3
-                ? `${classes.drawerItem} ${classes.drawerItemSelected}`
-                : classes.drawerItem
-              }
-            >About Us</ListItemText>
-          </ListItem>
-          <ListItem
-            divider
-            button
-            component={Link}
-            to="/contact"
-            onClick={() => {
-              setOpenDrawer(false);
-              setValue(4);
-            }}
-            selected={value === 4}
-          >
-            <ListItemText
-              disableTypography
-              className={value === 4
-                ? `${classes.drawerItem} ${classes.drawerItemSelected}`
-                : classes.drawerItem
-              }
-            >Contact Us</ListItemText>
-          </ListItem>
+          {
+            routes.map((route) => (
+              <ListItem
+                key={route.activeIndex}
+                divider
+                button
+                component={Link}
+                to={route.link}
+                onClick={() => {
+                  setOpenDrawer(false);
+                  setValue(route.activeIndex);
+                }}
+                selected={value === route.activeIndex}
+              >
+                <ListItemText
+                  disableTypography
+                  className={value === route.activeIndex
+                    ? `${classes.drawerItem} ${classes.drawerItemSelected}`
+                    : classes.drawerItem
+                  }
+                >{route.name}</ListItemText>
+              </ListItem>
+            ))
+          }
           <ListItem
             divider
             button
