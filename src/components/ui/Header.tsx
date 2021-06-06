@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { IconButton, useMediaQuery, useScrollTrigger } from '@material-ui/core';
@@ -146,66 +146,36 @@ function Header() {
   }
 
   const menuOptions = [
-    { name: "Services", link: "/services" },
-    { name: "Custom Software", link: "/customsoftware" },
-    { name: "Mobile App Development", link: "/mobileapps" },
-    { name: "Website Development", link: "/websites" },
-  ]
+    { name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
+    { name: "Custom Software", link: "/customsoftware", activeIndex: 1, selectedIndex: 1 },
+    { name: "Mobile App Development", link: "/mobileapps", activeIndex: 1, selectedIndex: 2 },
+    { name: "Website Development", link: "/websites", activeIndex: 1, selectedIndex: 3 },
+  ];
+
+  const routes = [
+    { name: "Home", link: "/", activeIndex: 0, selectedIndex: 0 },
+    { name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
+    { name: "Revolution", link: "/revolution", activeIndex: 2, selectedIndex: 0 },
+    { name: "About Us", link: "/about", activeIndex: 3, selectedIndex: 0 },
+    { name: "Contact Us", link: "/contact", activeIndex: 4, selectedIndex: 0 },
+  ];
 
   useEffect(() => {
-    switch (window.location.pathname) {
-      case "/":
-        if (value !== 0) {
-          setValue(0)
-        }
-        break;
-      case "/services":
-        if (value !== 1) {
-          setValue(1)
-        }
-        break;
-      case "/customsoftware":
-        if (value !== 1) {
-          setValue(1);
-          setSelectedIndex(1);
-        }
-        break;
-      case "/mobileapps":
-        if (value !== 1) {
-          setValue(1);
-          setSelectedIndex(2);
-        }
-        break;
-      case "/websites":
-        if (value !== 1) {
-          setValue(1);
-          setSelectedIndex(3)
-        }
-        break;
-      case "/revolution":
-        if (value !== 2) {
-          setValue(2);
-        }
-        break;
-      case "/about":
-        if (value !== 3) {
-          setValue(3);
-        }
-        break;
-      case "/contact":
-        if (value !== 4) {
-          setValue(4);
-        }
-        break;
-      case "/estimate":
-        if (value !== 5) {
-          setValue(5);
-        }
-        break;
-      default:
-        break;
-    }
-  }, [value])
+    [...menuOptions, ...routes].forEach(route => {
+      switch (window.location.pathname) {
+        case `${route.link}`:
+          if (value !== route.activeIndex) {
+            setValue(route.activeIndex);
+            if (route.selectedIndex && route.selectedIndex !== selectedIndex) {
+              setSelectedIndex(route.selectedIndex);
+            }
+          }
+          break;
+        default:
+          break;
+      }
+    })
+  }, [value, menuOptions, routes, selectedIndex])
 
   const tabs = (
     <React.Fragment>
