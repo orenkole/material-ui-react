@@ -73,6 +73,7 @@ function Header() {
   const [value, setValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleChange = (e: any, value: any) => {
     setValue(value);
@@ -85,11 +86,24 @@ function Header() {
     setOpen(true);
   }
 
+  const handleMenuItemClick = (e: any, i: number) => {
+    setAnchorEl(null); // close menu
+    setOpen(false); // close menu
+    setSelectedIndex(i); // select menu item
+  }
+
   // close menu
   const handleClose = (e: any) => {
     setAnchorEl(null);
     setOpen(false);
   }
+
+  const menuOptions = [
+    {name: "Services", link: "/services"},
+    {name: "Custom Software", link: "/customsoftware"},
+    {name: "Mobile App Development", link: "/mobileapps"},
+    {name: "Website Development", link: "/websites"},
+  ]
 
   useEffect(() => {
     if (window.location.pathname === "/" && value !== 0) {
@@ -171,38 +185,27 @@ function Header() {
               classes={{paper: classes.menu}}
               elevation={0}
             >
-              <MenuItem 
-                onClick={(e: any) => {handleClose(e); setValue(1)}}
-                component={Link}
-                to="/services"
-                classes={{root: classes.menuItem}}
-              >
-                Services
-              </MenuItem>
-              <MenuItem 
-                onClick={(e: any) => {handleClose(e); setValue(1)}}
-                component={Link}
-                to="/customsoftware"
-                classes={{root: classes.menuItem}}
-              >
-                Custom software development
-              </MenuItem>
-              <MenuItem 
-                onClick={(e: any) => {handleClose(e); setValue(1)}}
-                component={Link}
-                to="/mobileapps"
-                classes={{root: classes.menuItem}}
-              >
-                Mobile App Development
-              </MenuItem>
-              <MenuItem 
-                onClick={(e: any) => {handleClose(e); setValue(1)}}
-                component={Link}
-                to="/websites"
-                classes={{root: classes.menuItem}}
-              >
-                Website Development
-              </MenuItem>
+              {
+                menuOptions.map((option: any, i: number) => {
+                  return (
+                    <MenuItem 
+                      key={option}
+                      onClick={(event: any) => {
+                        handleMenuItemClick(event, i);
+                        setValue(1);
+                        handleClose(event);
+                      }}
+                      // menu item selecte and tab selected also
+                      selected={i === selectedIndex && value === 1}
+                      component={Link}
+                      to={option.link}
+                      classes={{root: classes.menuItem}}
+                    >
+                      {option.name}
+                    </MenuItem>
+                  )
+                })
+              }
             </Menu>
           </Toolbar>
         </AppBar>
