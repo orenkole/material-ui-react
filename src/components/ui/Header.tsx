@@ -259,8 +259,8 @@ function Header() {
   const drawer = (
     <React.Fragment>
       <SwipeableDrawer
-        disableBackdropTransition={!iOS}
-        disableDiscovery={iOS}
+        // disableBackdropTransition={!iOS}
+        // disableDiscovery={iOS}
         open={openDrawer}
         onClose={() => { setOpenDrawer(false) }}
         onOpen={() => { setOpenDrawer(true) }}
