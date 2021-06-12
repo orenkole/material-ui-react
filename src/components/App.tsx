@@ -4,6 +4,7 @@ import Header from './ui/Header';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from "./ui/Theme";
 import Footer from './ui/Footer';
+import LandingPage from './LandingPage';
 
 function App() {
 
@@ -16,7 +17,7 @@ function App() {
         <BrowserRouter>
           <Header value={value} setValue={setValue} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
           <Switch>
-            <Route exact path="/" component={() => <div>Home</div>} />
+            <Route exact path="/" component={LandingPage} />
             <Route exact path="/services" component={() => <div>Services</div>} />
             <Route exact path="/revolution" component={() => <div>Revolution</div>} />
             <Route exact path="/customsoftware" component={() => <div>Custom Software</div>} />
