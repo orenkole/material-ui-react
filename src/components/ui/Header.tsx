@@ -64,6 +64,9 @@ const useStyles = makeStyles((theme: any) => ({
     marginLeft: "50px",
     marginRight: "25px",
     height: "45px",
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.light,
+    },
   },
   logoContainer: {
     padding: 0,
